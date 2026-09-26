@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Bodoni_Moda, Manrope } from 'next/font/google'
+import { Analytics } from '@/components/seo/Analytics'
 import { siteConfig } from '@/lib/site'
 import './globals.css'
 
@@ -32,7 +33,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="es-CO" className={`${bodoni.variable} ${manrope.variable} h-full`}>
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <Analytics />
+      </body>
     </html>
   )
 }
