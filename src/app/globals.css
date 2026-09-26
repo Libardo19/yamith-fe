@@ -1,0 +1,66 @@
+@import 'tailwindcss';
+
+/*
+ * Sistema visual "clínica boutique premium" (propuesta, págs. 5–11):
+ * azul noche + dorado + crema, serif editorial para títulos y sans limpia para texto.
+ */
+@theme {
+  --color-navy-950: #050b18;
+  --color-navy-900: #0b1426;
+  --color-navy-800: #14213a;
+  --color-navy-700: #22304d;
+
+  --color-gold-700: #7a5a1c;
+  --color-gold-600: #946c24;
+  --color-gold-500: #b8924a;
+  --color-gold-300: #d9bf8c;
+  --color-gold-100: #f3ead7;
+
+  --color-cream-50: #fbf9f5;
+  --color-cream-100: #f5f0e8;
+  --color-cream-200: #ebe3d5;
+
+  --color-ink: #1b1f27;
+  --color-muted: #6b6f78;
+  --color-line: #e6e1d8;
+
+  --color-success: #2f7d57;
+  --color-danger: #b23b3b;
+
+  --font-serif: var(--font-bodoni), 'Times New Roman', serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+
+  --tracking-label: 0.18em;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream-50 font-sans text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif font-normal text-navy-900;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-gold-500;
+  }
+}
+
+@layer components {
+  /* Rótulo pequeño en mayúsculas sobre los títulos ("ARTE & PRECISIÓN MÉDICA"). */
+  .eyebrow {
+    @apply text-xs font-semibold tracking-(--tracking-label) text-gold-600 uppercase;
+  }
+
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+}
