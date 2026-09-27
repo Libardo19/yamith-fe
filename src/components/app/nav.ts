@@ -40,9 +40,9 @@ export const adminNav = (base: string): NavItem[] => [
 
 export const portalNav = (base: string): NavItem[] => [
   { href: base, label: 'Inicio', icon: Home },
-  { href: `${base}/procedimiento`, label: 'Mi procedimiento', icon: ClipboardList, soon: 'F4' },
+  { href: `${base}/procedimiento`, label: 'Mi procedimiento', icon: ClipboardList },
   { href: `${base}/citas`, label: 'Mis citas', icon: CalendarDays },
-  { href: `${base}/fotos`, label: 'Mis fotos', icon: Images, soon: 'F4' },
-  { href: `${base}/documentos`, label: 'Mis documentos', icon: FileText, soon: 'F4' },
+  { href: `${base}/fotos`, label: 'Mis fotos', icon: Images },
+  { href: `${base}/documentos`, label: 'Mis documentos', icon: FileText },
   { href: `${base}/perfil`, label: 'Mi perfil', icon: UserRound }
 ]

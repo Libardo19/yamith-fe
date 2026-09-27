@@ -7,11 +7,12 @@ import { ArrowLeft, CalendarDays, Mail, Phone, Send } from 'lucide-react'
 import { Drawer } from '@/components/admin/Drawer'
 import { NewAppointmentForm } from '@/components/admin/NewAppointmentForm'
 import { PatientForm } from '@/components/admin/PatientForm'
+import { TrackingSection } from '@/components/admin/TrackingSection'
 import { Avatar } from '@/components/app/AppShell'
 import { LoadingBlock } from '@/components/app/SessionShell'
 import {
   AccountStatusBadge,
-  CaseStatusBadge,
+  AppointmentStatusBadge,
   EmptyState,
   Panel,
   appointmentTypeLabel,
@@ -187,32 +188,7 @@ export default function PatientDetailPage() {
         </Panel>
       ) : null}
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-2">
-        <Panel title="Procedimientos" bodyClassName="p-0">
-          {p.cases.length ? (
-            <ul className="divide-y divide-line">
-              {p.cases.map((c) => (
-                <li key={c.id} className="flex items-center justify-between gap-4 px-6 py-4">
-                  <span>
-                    <span className="block font-semibold text-navy-900">{c.procedure.name}</span>
-                    <span className="text-xs text-muted">
-                      {c.sede?.name ?? 'Sin sede'} ·{' '}
-                      {c.surgeryDate
-                        ? `Cirugía ${fmtDate(c.surgeryDate)}`
-                        : `Creado ${fmtDate(c.createdAt)}`}
-                    </span>
-                  </span>
-                  <CaseStatusBadge status={c.status} />
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <EmptyState
-              title="Sin procedimientos"
-              text="El seguimiento de procedimientos (línea de tiempo, fotos y documentos) llega en la fase F4."
-            />
-          )}
-        </Panel>
+      <div className="mt-6">
         <Panel
           title="Citas"
           bodyClassName="p-0"
@@ -231,6 +207,7 @@ export default function PatientDetailPage() {
                   <span className="text-xs text-muted">
                     {appointmentTypeLabel[a.type]} · {a.sede.name}
                   </span>
+                  <AppointmentStatusBadge status={a.status} />
                 </li>
               ))}
             </ul>
@@ -241,6 +218,14 @@ export default function PatientDetailPage() {
             />
           )}
         </Panel>
+      </div>
+
+      <div className="mt-10">
+        <TrackingSection
+          patientId={p.id}
+          sedes={sedes}
+          notify={(tone, text) => setNotice({ tone, text })}
+        />
       </div>
 
       {booking ? (

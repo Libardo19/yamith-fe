@@ -126,7 +126,7 @@ export interface PatientDetail {
     id: string
     startsAt: string
     type: AppointmentType
-    status: string
+    status: AppointmentStatus
     sede: { name: string }
   }>
 }
@@ -220,4 +220,62 @@ export interface AvailabilityBlock {
   endsAt: string
   reason: string | null
   sede: { name: string; city: string } | null
+}
+
+// ── Seguimiento (F4) ─────────────────────────────────────────
+
+export type MediaType = 'FOTO' | 'CONSENTIMIENTO' | 'INDICACIONES' | 'OTRO'
+export type MediaStage = 'ANTES' | 'DESPUES' | 'CONTROL'
+
+export interface MediaFile {
+  id: string
+  caseId: string | null
+  originalName: string
+  mimeType: string
+  sizeBytes: number
+  type: MediaType
+  stage: MediaStage | null
+  title: string | null
+  visibleToPatient: boolean
+  takenAt: string | null
+  createdAt: string
+  case?: { procedure: { name: string } } | null
+}
+
+export interface TimelineEntry {
+  id: string
+  type: 'VALORACION' | 'CIRUGIA' | 'CONTROL' | 'NOTA'
+  date: string
+  title: string
+  description: string | null
+  visibleToPatient: boolean
+  author: { name: string } | null
+}
+
+export interface TrackingCase {
+  id: string
+  status: CaseStatus
+  surgeryDate: string | null
+  finishedAt: string | null
+  notes: string | null
+  createdAt: string
+  procedure: { id?: string; name: string; slug?: string }
+  sede: { id?: string; name: string } | null
+  events: TimelineEntry[]
+  files?: MediaFile[]
+  survey?: {
+    sentAt?: string | null
+    answeredAt: string | null
+    rating?: number | null
+    nps?: number | null
+    comment?: string | null
+  } | null
+}
+
+export interface PatientDashboard {
+  nextAppointment: (Omit<Appointment, 'sede'> & { sede: { name: string; address: string } }) | null
+  activeCase: TrackingCase | null
+  casesCount: number
+  photosCount: number
+  latestDocuments: MediaFile[]
 }
