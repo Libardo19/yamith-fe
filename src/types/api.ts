@@ -279,3 +279,35 @@ export interface PatientDashboard {
   photosCount: number
   latestDocuments: MediaFile[]
 }
+
+// ── Encuestas y galería (F5) ─────────────────────────────────
+
+export interface SurveyResults {
+  sent: number
+  answered: number
+  averageRating: number | null
+  nps: number | null
+  distribution: Array<{ rating: number; count: number }>
+  items: Array<{
+    id: string
+    sentAt: string | null
+    answeredAt: string | null
+    rating: number | null
+    nps: number | null
+    comment: string | null
+    procedure: string
+    city: string | null
+    patient: { id: string; firstName: string; lastName: string }
+  }>
+}
+
+export interface GalleryItem {
+  id: string
+  beforeImageUrl: string
+  afterImageUrl: string
+  description: string | null
+  consentRef?: string
+  isPublished?: boolean
+  sortOrder?: number
+  procedure: { id?: string; slug?: string; name: string } | null
+}

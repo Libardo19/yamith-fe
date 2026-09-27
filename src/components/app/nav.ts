@@ -8,6 +8,7 @@ import {
   Inbox,
   LayoutDashboard,
   MapPin,
+  Star,
   Stethoscope,
   UserCog,
   UserRound,
@@ -33,6 +34,8 @@ export const adminNav = (base: string): NavItem[] => [
   { href: `${base}/disponibilidad`, label: 'Disponibilidad', icon: Clock },
   { href: `${base}/solicitudes`, label: 'Solicitudes', icon: Inbox },
   { href: `${base}/procedimientos`, label: 'Procedimientos', icon: Stethoscope },
+  { href: `${base}/galeria`, label: 'Galería', icon: Images },
+  { href: `${base}/encuestas`, label: 'Encuestas', icon: Star },
   { href: `${base}/sedes`, label: 'Sedes', icon: MapPin, adminOnly: true },
   { href: `${base}/equipo`, label: 'Equipo', icon: UserCog, adminOnly: true },
   { href: `${base}/cuenta`, label: 'Mi cuenta', icon: UserRound }

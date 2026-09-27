@@ -1,7 +1,7 @@
 import 'server-only'
 import { fallbackSedes } from '@/content/site'
 import { fallbackProcedures } from '@/content/procedures'
-import type { ProcedureCard, ProcedureDetail, Sede } from '@/types/api'
+import type { GalleryItem, ProcedureCard, ProcedureDetail, Sede } from '@/types/api'
 import { API_URL } from './api'
 
 /**
@@ -46,4 +46,9 @@ export async function getProcedure(slug: string): Promise<ProcedureDetail | null
 export async function getSedes(): Promise<Sede[]> {
   const sedes = await fetchPublic<Sede[]>('/sedes')
   return sedes?.length ? sedes : fallbackSedes
+}
+
+/** Resultados antes/después publicados (vacío si el API no responde). */
+export async function getGallery(): Promise<GalleryItem[]> {
+  return (await fetchPublic<GalleryItem[]>('/gallery')) ?? []
 }

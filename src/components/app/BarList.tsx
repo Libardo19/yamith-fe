@@ -39,7 +39,7 @@ export function BarList({
                 <div
                   className="relative h-5 rounded-r-[4px] bg-navy-700 transition-[width] duration-500"
                   style={{
-                    width: `max(${pct}%, 4px)`,
+                    width: d.value > 0 ? `max(${pct}%, 4px)` : 0,
                     opacity: hover === null || hover === i ? 1 : 0.55
                   }}
                 />
