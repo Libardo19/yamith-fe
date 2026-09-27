@@ -170,3 +170,54 @@ export interface Overview {
     sede: { name: string }
   }>
 }
+
+// ── Agenda (F3) ──────────────────────────────────────────────
+
+export type AppointmentStatus =
+  'PENDIENTE' | 'CONFIRMADA' | 'REPROGRAMADA' | 'CANCELADA' | 'ATENDIDA' | 'NO_ASISTIO'
+
+export interface Appointment {
+  id: string
+  startsAt: string
+  endsAt: string
+  type: AppointmentType
+  modality: 'PRESENCIAL' | 'VIRTUAL'
+  status: AppointmentStatus
+  notes: string | null
+  cancelReason: string | null
+  rescheduledFromId: string | null
+  sede: { id?: string; name: string; city: string; address?: string }
+  patient?: {
+    id: string
+    firstName: string
+    lastName: string
+    phone: string | null
+    user: { email: string }
+  }
+  case?: { id: string; procedure: { name: string } } | null
+}
+
+export interface SlotDay {
+  date: string
+  slots: Array<{ startsAt: string; endsAt: string }>
+}
+
+export interface AvailabilityRule {
+  id: string
+  sedeId: string
+  weekday: number
+  startTime: string
+  endTime: string
+  slotMinutes: number
+  isActive: boolean
+  sede: { name: string; city: string }
+}
+
+export interface AvailabilityBlock {
+  id: string
+  sedeId: string | null
+  startsAt: string
+  endsAt: string
+  reason: string | null
+  sede: { name: string; city: string } | null
+}

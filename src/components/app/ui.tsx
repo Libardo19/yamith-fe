@@ -169,3 +169,17 @@ export const table = {
   td: 'border-b border-line px-4 py-4 align-middle',
   row: 'transition-colors hover:bg-cream-50'
 }
+
+const appointmentStatus: Record<import('@/types/api').AppointmentStatus, [string, BadgeTone]> = {
+  PENDIENTE: ['Pendiente', 'gold'],
+  CONFIRMADA: ['Confirmada', 'success'],
+  REPROGRAMADA: ['Reprogramada', 'muted'],
+  CANCELADA: ['Cancelada', 'danger'],
+  ATENDIDA: ['Atendida', 'navy'],
+  NO_ASISTIO: ['No asistió', 'muted']
+}
+export const AppointmentStatusBadge = ({
+  status
+}: {
+  status: import('@/types/api').AppointmentStatus
+}) => <Badge tone={appointmentStatus[status][1]}>{appointmentStatus[status][0]}</Badge>

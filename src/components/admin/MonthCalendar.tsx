@@ -1,15 +1,19 @@
+'use client'
+
 import { cn } from '@/lib/cn'
-import type { AppointmentType } from '@/types/api'
+import { bogotaDateKey, bogotaTime } from '@/lib/bogota'
 import { appointmentTypeLabel } from '@/components/app/ui'
 
 export interface CalendarEvent {
+  id?: string
   startsAt: string
-  type: AppointmentType | string
+  type: string
   who: string
   sede: string
+  status?: string
 }
 
-// Estado del tipo de cita: fondo suave + texto oscuro + etiqueta (nunca sólo color).
+// Tipo de cita: fondo suave + texto oscuro + leyenda (nunca sólo color).
 const typeStyle: Record<string, string> = {
   VALORACION: 'bg-cream-100 text-navy-800 border-l-navy-700',
   CONTROL: 'bg-gold-100 text-gold-700 border-l-gold-600',
@@ -19,35 +23,41 @@ const typeStyle: Record<string, string> = {
 
 const WEEKDAYS = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
 
-const hhmm = (iso: string) =>
-  new Date(iso).toLocaleTimeString('es-CO', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hourCycle: 'h23'
-  })
+const pad = (n: number) => String(n).padStart(2, '0')
 
-/** Vista de mes (lunes a domingo) con las citas de cada día. */
-export function MonthCalendar({ month, events }: { month: Date; events: CalendarEvent[] }) {
-  const first = new Date(month.getFullYear(), month.getMonth(), 1)
-  const offset = (first.getDay() + 6) % 7
-  const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate()
+/**
+ * Vista de mes (lunes a domingo). Los días se calculan en hora de Colombia, así que
+ * no depende de la zona horaria del servidor ni del navegador.
+ * `year`/`month` (1–12) indican el mes; `today` es 'YYYY-MM-DD'.
+ */
+export function MonthCalendar({
+  year,
+  month,
+  today,
+  events,
+  onSelect
+}: {
+  year: number
+  month: number
+  today: string
+  events: CalendarEvent[]
+  onSelect?: (event: CalendarEvent) => void
+}) {
+  const first = new Date(Date.UTC(year, month - 1, 1))
+  const offset = (first.getUTCDay() + 6) % 7
+  const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate()
   const cells = Array.from({ length: Math.ceil((offset + daysInMonth) / 7) * 7 }, (_, i) => {
     const day = i - offset + 1
     return day >= 1 && day <= daysInMonth ? day : null
   })
-  const today = new Date()
-  const isToday = (d: number) =>
-    d === today.getDate() &&
-    month.getMonth() === today.getMonth() &&
-    month.getFullYear() === today.getFullYear()
+  const keyOf = (day: number) => `${year}-${pad(month)}-${pad(day)}`
 
-  const byDay = new Map<number, CalendarEvent[]>()
+  const byDay = new Map<string, CalendarEvent[]>()
   for (const e of events) {
-    const d = new Date(e.startsAt)
-    if (d.getMonth() !== month.getMonth() || d.getFullYear() !== month.getFullYear()) continue
+    const k = bogotaDateKey(e.startsAt)
     byDay.set(
-      d.getDate(),
-      [...(byDay.get(d.getDate()) ?? []), e].sort((a, b) => a.startsAt.localeCompare(b.startsAt))
+      k,
+      [...(byDay.get(k) ?? []), e].sort((a, b) => a.startsAt.localeCompare(b.startsAt))
     )
   }
 
@@ -60,6 +70,7 @@ export function MonthCalendar({ month, events }: { month: Date; events: Calendar
             {label}
           </span>
         ))}
+        <span className="inline-flex items-center gap-2 line-through">Cancelada</span>
       </div>
       <div className="overflow-x-auto">
         <div className="grid min-w-[760px] grid-cols-7 border-t border-l border-line bg-white">
@@ -81,7 +92,7 @@ export function MonthCalendar({ month, events }: { month: Date; events: Calendar
                   <span
                     className={cn(
                       'inline-flex size-6 items-center justify-center text-xs tabular-nums',
-                      isToday(day)
+                      keyOf(day) === today
                         ? 'rounded-full bg-navy-900 font-semibold text-white'
                         : 'text-muted'
                     )}
@@ -89,19 +100,41 @@ export function MonthCalendar({ month, events }: { month: Date; events: Calendar
                     {day}
                   </span>
                   <ul className="mt-1 space-y-1">
-                    {(byDay.get(day) ?? []).map((e) => (
-                      <li
-                        key={e.startsAt + e.who}
-                        className={cn(
-                          'truncate border-l-2 px-1.5 py-1 text-[11px] leading-tight',
-                          typeStyle[e.type]
-                        )}
-                        title={`${hhmm(e.startsAt)} · ${e.who} · ${e.sede}`}
-                      >
-                        <span className="font-semibold tabular-nums">{hhmm(e.startsAt)}</span>{' '}
-                        {e.who}
-                      </li>
-                    ))}
+                    {(byDay.get(keyOf(day)) ?? []).map((e) => {
+                      const cancelled = e.status === 'CANCELADA' || e.status === 'NO_ASISTIO'
+                      const label = (
+                        <>
+                          <span className="font-semibold tabular-nums">
+                            {bogotaTime(e.startsAt)}
+                          </span>{' '}
+                          {e.who}
+                        </>
+                      )
+                      const cls = cn(
+                        'block w-full truncate border-l-2 px-1.5 py-1 text-left text-[11px] leading-tight',
+                        typeStyle[e.type],
+                        cancelled && 'line-through opacity-50'
+                      )
+                      const title = `${bogotaTime(e.startsAt)} · ${e.who} · ${e.sede}`
+                      return (
+                        <li key={(e.id ?? '') + e.startsAt + e.who}>
+                          {onSelect ? (
+                            <button
+                              type="button"
+                              className={cn(cls, 'hover:brightness-95')}
+                              title={title}
+                              onClick={() => onSelect(e)}
+                            >
+                              {label}
+                            </button>
+                          ) : (
+                            <span className={cls} title={title}>
+                              {label}
+                            </span>
+                          )}
+                        </li>
+                      )
+                    })}
                   </ul>
                 </>
               ) : null}

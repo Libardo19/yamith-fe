@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { ArrowLeft, CalendarDays, Mail, Phone, Send } from 'lucide-react'
+import { Drawer } from '@/components/admin/Drawer'
+import { NewAppointmentForm } from '@/components/admin/NewAppointmentForm'
 import { PatientForm } from '@/components/admin/PatientForm'
 import { Avatar } from '@/components/app/AppShell'
 import { LoadingBlock } from '@/components/app/SessionShell'
@@ -24,10 +26,11 @@ import type { PatientDetail, Sede } from '@/types/api'
 
 export default function PatientDetailPage() {
   const { id } = useParams<{ id: string }>()
-  const { data: p, error, setData } = useApi<PatientDetail>(`/admin/patients/${id}`)
+  const { data: p, error, setData, reload } = useApi<PatientDetail>(`/admin/patients/${id}`)
   const { data: sedes } = useApi<Sede[]>('/admin/sedes')
   const [editing, setEditing] = useState(false)
   const [notice, setNotice] = useState<{ tone: 'success' | 'error'; text: string } | null>(null)
+  const [booking, setBooking] = useState(false)
 
   if (error) return <Alert tone="error">{error}</Alert>
   if (!p || !sedes) return <LoadingBlock />
@@ -210,7 +213,15 @@ export default function PatientDetailPage() {
             />
           )}
         </Panel>
-        <Panel title="Citas" bodyClassName="p-0">
+        <Panel
+          title="Citas"
+          bodyClassName="p-0"
+          action={
+            <Button variant="outline" className="px-3 py-2" onClick={() => setBooking(true)}>
+              Nueva cita
+            </Button>
+          }
+        >
           {p.appointments.length ? (
             <ul className="divide-y divide-line">
               {p.appointments.map((a) => (
@@ -224,10 +235,27 @@ export default function PatientDetailPage() {
               ))}
             </ul>
           ) : (
-            <EmptyState title="Sin citas" text="La agenda en línea llega en la fase F3." />
+            <EmptyState
+              title="Sin citas"
+              text="Agenda una cita para este paciente o deja que la agende desde su portal."
+            />
           )}
         </Panel>
       </div>
+
+      {booking ? (
+        <Drawer title="Nueva cita" onClose={() => setBooking(false)}>
+          <NewAppointmentForm
+            sedes={sedes}
+            defaultPatient={{ id: p.id, name }}
+            onCreated={(message) => {
+              setBooking(false)
+              setNotice({ tone: 'success', text: message })
+              reload()
+            }}
+          />
+        </Drawer>
+      ) : null}
     </>
   )
 }
