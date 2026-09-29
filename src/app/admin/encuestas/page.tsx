@@ -51,12 +51,10 @@ export default function SurveysPage() {
             <Panel title="Calificaciones">
               {data.answered ? (
                 <BarList
-                  data={[...data.distribution]
-                    .reverse()
-                    .map((d) => ({
-                      label: `${d.rating} estrella${d.rating === 1 ? '' : 's'}`,
-                      value: d.count
-                    }))}
+                  data={[...data.distribution].reverse().map((d) => ({
+                    label: `${d.rating} estrella${d.rating === 1 ? '' : 's'}`,
+                    value: d.count
+                  }))}
                   unit="respuestas"
                   caption="Distribución de calificaciones de 1 a 5"
                 />

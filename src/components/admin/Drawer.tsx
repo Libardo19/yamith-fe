@@ -7,11 +7,13 @@ import { X } from 'lucide-react'
 export function Drawer({
   title,
   onClose,
-  children
+  children,
+  wide = false
 }: {
   title: string
   onClose: () => void
   children: ReactNode
+  wide?: boolean
 }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
@@ -27,7 +29,9 @@ export function Drawer({
         className="absolute inset-0 bg-navy-950/40"
         onClick={onClose}
       />
-      <aside className="absolute inset-y-0 right-0 flex w-full max-w-md flex-col bg-white shadow-2xl">
+      <aside
+        className={`absolute inset-y-0 right-0 flex w-full flex-col bg-white shadow-2xl ${wide ? 'max-w-2xl' : 'max-w-md'}`}
+      >
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
           <h2 className="font-serif text-2xl">{title}</h2>
           <button

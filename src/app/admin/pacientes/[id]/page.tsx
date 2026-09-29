@@ -3,8 +3,9 @@
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
-import { ArrowLeft, CalendarDays, Mail, Phone, Send } from 'lucide-react'
+import { ArrowLeft, CalendarDays, Mail, Phone, Send, Sparkles } from 'lucide-react'
 import { Drawer } from '@/components/admin/Drawer'
+import { ChatPanel } from '@/components/chat/ChatPanel'
 import { NewAppointmentForm } from '@/components/admin/NewAppointmentForm'
 import { PatientForm } from '@/components/admin/PatientForm'
 import { TrackingSection } from '@/components/admin/TrackingSection'
@@ -32,6 +33,7 @@ export default function PatientDetailPage() {
   const [editing, setEditing] = useState(false)
   const [notice, setNotice] = useState<{ tone: 'success' | 'error'; text: string } | null>(null)
   const [booking, setBooking] = useState(false)
+  const [assistant, setAssistant] = useState(false)
 
   if (error) return <Alert tone="error">{error}</Alert>
   if (!p || !sedes) return <LoadingBlock />
@@ -135,6 +137,9 @@ export default function PatientDetailPage() {
                 <Send className="size-4" /> Reenviar invitación
               </Button>
             ) : null}
+            <Button variant="outline" className="px-4 py-2.5" onClick={() => setAssistant(true)}>
+              <Sparkles className="size-4" /> Asistente
+            </Button>
             <Button variant="outline" className="px-4 py-2.5" onClick={() => setEditing((v) => !v)}>
               {editing ? 'Cancelar' : 'Editar ficha'}
             </Button>
@@ -227,6 +232,24 @@ export default function PatientDetailPage() {
           notify={(tone, text) => setNotice({ tone, text })}
         />
       </div>
+
+      {assistant ? (
+        <Drawer title={`Asistente · ${name}`} onClose={() => setAssistant(false)} wide>
+          <ChatPanel
+            endpoint="/admin/chat"
+            patientId={p.id}
+            className="h-full border-0"
+            intro="Pregunta sobre este paciente: resumen del caso, qué revisar en el control o un borrador de indicaciones."
+            suggestions={[
+              'Resúmeme el caso',
+              '¿Qué revisar en su próximo control?',
+              'Redacta un mensaje con sus cuidados de esta semana',
+              '¿Cuánto suele durar su recuperación?'
+            ]}
+            disclaimer="Apoyo para el equipo: verifica siempre la información clínica. La conversación queda registrada."
+          />
+        </Drawer>
+      ) : null}
 
       {booking ? (
         <Drawer title="Nueva cita" onClose={() => setBooking(false)}>
