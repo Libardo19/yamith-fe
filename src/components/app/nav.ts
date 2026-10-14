@@ -9,7 +9,6 @@ import {
   LayoutDashboard,
   MapPin,
   Star,
-  Sparkles,
   Stethoscope,
   UserCog,
   UserRound,
@@ -30,7 +29,6 @@ export interface NavItem {
 /** `base` = '/admin' (real) o '/demo/admin' (borrador con datos de ejemplo). */
 export const adminNav = (base: string): NavItem[] => [
   { href: base, label: 'Vista general', icon: LayoutDashboard },
-  { href: `${base}/asistente`, label: 'Asistente', icon: Sparkles },
   { href: `${base}/pacientes`, label: 'Pacientes', icon: Users },
   { href: `${base}/citas`, label: 'Citas', icon: CalendarDays },
   { href: `${base}/disponibilidad`, label: 'Disponibilidad', icon: Clock },
@@ -45,7 +43,6 @@ export const adminNav = (base: string): NavItem[] => [
 
 export const portalNav = (base: string): NavItem[] => [
   { href: base, label: 'Inicio', icon: Home },
-  { href: `${base}/asistente`, label: 'Asistente', icon: Sparkles },
   { href: `${base}/procedimiento`, label: 'Mi procedimiento', icon: ClipboardList },
   { href: `${base}/citas`, label: 'Mis citas', icon: CalendarDays },
   { href: `${base}/fotos`, label: 'Mis fotos', icon: Images },

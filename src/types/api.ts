@@ -306,6 +306,8 @@ export interface GalleryItem {
   beforeImageUrl: string
   afterImageUrl: string
   description: string | null
+  /** Técnica de lipoabdominoplastia (sólo con Abdominoplastia). */
+  technique?: string | null
   consentRef?: string
   isPublished?: boolean
   sortOrder?: number

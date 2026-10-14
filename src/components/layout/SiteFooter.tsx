@@ -59,7 +59,9 @@ export function SiteFooter({ sedes }: { sedes: Sede[] }) {
                 <MapPin className="mt-0.5 size-4 shrink-0 text-gold-500" aria-hidden />
                 <span>
                   <span className="block text-white">{s.city}</span>
-                  <span className="text-white/50">{s.address}</span>
+                  <span className="text-white/50">
+                    {!/pendiente/i.test(s.address) ? s.address : null}
+                  </span>
                 </span>
               </li>
             ))}
@@ -85,7 +87,7 @@ export function SiteFooter({ sedes }: { sedes: Sede[] }) {
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="container-page flex flex-col gap-2 py-6 text-xs text-white/40 sm:flex-row sm:justify-between">
+        <div className="container-page flex flex-col gap-2 py-6 text-xs text-white/60 sm:flex-row sm:justify-between">
           <p>
             © {year} {brand.name} · {brand.specialty}. Todos los derechos reservados.
           </p>

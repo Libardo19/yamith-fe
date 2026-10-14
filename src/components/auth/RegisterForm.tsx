@@ -78,7 +78,7 @@ export function RegisterForm() {
       }
     >
       <GoogleButton text="signup_with" />
-      <form onSubmit={onSubmit} noValidate className="grid gap-6 sm:grid-cols-2">
+      <form onSubmit={onSubmit} noValidate className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <Field label="Nombre" htmlFor="firstName" error={errors['firstName']}>
           <Input id="firstName" name="firstName" autoComplete="given-name" required />
         </Field>

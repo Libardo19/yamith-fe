@@ -26,7 +26,7 @@ export default function MyProcedurePage() {
       ) : (
         <div className="space-y-8">
           {data.map((c) => (
-            <div key={c.id} className="grid gap-6 xl:grid-cols-[1fr_1.5fr]">
+            <div key={c.id} className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_1.5fr]">
               <Panel
                 title={c.procedure.name}
                 action={<CaseStatusBadge status={c.status} />}

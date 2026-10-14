@@ -8,7 +8,7 @@ export default function DemoGalleryPage() {
         title="Galería de resultados"
         subtitle="Antes y después que se muestran en la web. Se publican sólo con el consentimiento escrito del paciente."
       />
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {['Mastopexia', 'Lipoescultura VASER', 'Abdominoplastia'].map((p) => (
           <Panel key={p} bodyClassName="p-0">
             <div className="grid grid-cols-2 gap-px bg-line">

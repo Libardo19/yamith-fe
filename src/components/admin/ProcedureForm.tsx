@@ -84,7 +84,7 @@ export function ProcedureForm({
 
   const e = (k: string) => errors[k]
   return (
-    <form onSubmit={handle} noValidate className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+    <form onSubmit={handle} noValidate className="grid grid-cols-1 gap-6 lg:grid-cols-[1.5fr_1fr]">
       <div className="space-y-6">
         <Field label="Nombre" htmlFor="name" error={e('name')}>
           <Input
@@ -127,7 +127,7 @@ export function ProcedureForm({
           label="Descripción"
           htmlFor="content"
           error={e('content')}
-          hint="Separa los párrafos con una línea en blanco."
+          hint="Separa los párrafos con una línea en blanco. Usa ## seguido del título para crear apartados en la ficha pública."
         >
           <Textarea id="content" name="content" rows={7} defaultValue={initial?.content} />
         </Field>

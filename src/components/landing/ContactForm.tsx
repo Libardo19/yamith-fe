@@ -44,7 +44,12 @@ export function ContactForm({
           modality: value('modality') || undefined,
           message: value('message') || undefined,
           acceptDataPolicy: form.get('acceptDataPolicy') === 'on',
-          website: value('website')
+          website: value('website'),
+          utm: Object.fromEntries(
+            [...new URLSearchParams(window.location.search)]
+              .filter(([key]) => key.startsWith('utm_'))
+              .map(([key, val]) => [key, val.slice(0, 200)])
+          )
         }
       })
       track('lead_submit', { sede: value('sede'), procedimiento: value('procedure') })
@@ -83,7 +88,7 @@ export function ContactForm({
 
   const err = (k: string) => errors[k]
   return (
-    <form onSubmit={onSubmit} noValidate className="grid gap-6 sm:grid-cols-2">
+    <form onSubmit={onSubmit} noValidate className="grid grid-cols-1 gap-6 sm:grid-cols-2">
       <Field label="Nombre completo" htmlFor="name" error={err('name')} className="sm:col-span-2">
         <Input
           id="name"

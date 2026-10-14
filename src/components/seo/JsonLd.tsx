@@ -12,24 +12,26 @@ export function JsonLd({ sedes }: { sedes: Sede[] }) {
         '@id': `${siteConfig.url}/#medico`,
         name: brand.name,
         url: siteConfig.url,
-        image: `${siteConfig.url}/images/doctor-hero.webp`,
+        image: `${siteConfig.url}/images/doctor-hero-editorial.webp`,
         medicalSpecialty: 'PlasticSurgery',
         description: siteConfig.description,
         areaServed: brand.cities
       },
-      ...sedes.map((s) => ({
-        '@type': 'MedicalClinic',
-        '@id': `${siteConfig.url}/#sede-${s.slug}`,
-        name: `${brand.name} · ${s.name}`,
-        address: {
-          '@type': 'PostalAddress',
-          streetAddress: s.address,
-          addressLocality: s.city,
-          addressCountry: 'CO'
-        },
-        medicalSpecialty: 'PlasticSurgery',
-        parentOrganization: { '@id': `${siteConfig.url}/#medico` }
-      }))
+      ...sedes
+        .filter((s) => s.address && !/pendiente/i.test(s.address))
+        .map((s) => ({
+          '@type': 'MedicalClinic',
+          '@id': `${siteConfig.url}/#sede-${s.slug}`,
+          name: `${brand.name} · ${s.name}`,
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: s.address,
+            addressLocality: s.city,
+            addressCountry: 'CO'
+          },
+          medicalSpecialty: 'PlasticSurgery',
+          parentOrganization: { '@id': `${siteConfig.url}/#medico` }
+        }))
     ]
   }
   return (

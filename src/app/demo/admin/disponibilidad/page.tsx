@@ -34,7 +34,7 @@ export default function DemoAvailabilityPage() {
         title="Disponibilidad"
         subtitle="Horario semanal de atención en cada sede. Los pacientes sólo ven los horarios libres dentro de estos rangos."
       />
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {schedule.map((s) => (
           <Panel key={s.sede} title={s.sede} bodyClassName="p-0">
             <ul className="divide-y divide-line">

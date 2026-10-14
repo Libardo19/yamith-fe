@@ -11,7 +11,7 @@ export default function DemoProfilePage() {
   return (
     <>
       <PageHeader title="Mi perfil" subtitle="Tus datos de contacto y la seguridad de tu cuenta." />
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Panel title="Datos personales">
           <dl className="divide-y divide-line text-sm">
             {rows.map(([k, v]) => (

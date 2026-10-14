@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { ContactSection } from '@/components/landing/ContactSection'
-import { SectionHeading } from '@/components/ui/Section'
+import { EditorialPageHero } from '@/components/landing/EditorialPageHero'
+import { LandingMotion } from '@/components/landing/LandingMotion'
 import { getProcedures, getSedes } from '@/lib/public-data'
 
 export const metadata: Metadata = {
@@ -11,17 +12,15 @@ export const metadata: Metadata = {
 export default async function ContactPage() {
   const [sedes, procedures] = await Promise.all([getSedes(), getProcedures()])
   return (
-    <>
-      <section className="bg-cream-50 py-16 sm:py-20">
-        <div className="container-page">
-          <SectionHeading
-            eyebrow="Contacto"
-            title="Estamos aquí para escucharte"
-            text="Agenda tu valoración presencial o virtual. Da el primer paso hacia tu transformación con la confianza y seguridad de un experto."
-          />
-        </div>
-      </section>
+    <LandingMotion>
+      <EditorialPageHero
+        eyebrow="Contacto y valoración"
+        title="Tu valoración comienza aquí"
+        description="Agenda una consulta presencial o virtual. Nuestro equipo te ayudará a coordinar la sede, la modalidad y la fecha de atención."
+        image="/images/doctor-scrubs-cutout.webp"
+        location="contacto_hero"
+      />
       <ContactSection sedes={sedes} procedures={procedures} />
-    </>
+    </LandingMotion>
   )
 }

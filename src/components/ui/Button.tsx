@@ -5,7 +5,7 @@ import { cn } from '@/lib/cn'
 type Variant = 'primary' | 'outline' | 'dark'
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-gold-500 text-white hover:bg-gold-600',
+  primary: 'bg-gold-700 text-white hover:bg-gold-600',
   outline: 'border border-navy-900/30 text-navy-900 hover:border-navy-900',
   dark: 'bg-navy-900 text-white hover:bg-navy-800'
 }

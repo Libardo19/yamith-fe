@@ -81,7 +81,7 @@ export default function SedesPage() {
       {error ? (
         <Alert tone="error">{error}</Alert>
       ) : data ? (
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {data.map((s) => (
             <SedeForm key={s.id} sede={s} />
           ))}

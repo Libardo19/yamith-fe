@@ -209,7 +209,7 @@ export default function AvailabilityPage() {
       {!sedes || !rules.data ? (
         <LoadingBlock />
       ) : (
-        <div className="grid gap-6 lg:grid-cols-2 2xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 2xl:grid-cols-3">
           {sedes.map((s) => (
             <SedeSchedule
               key={s.id}

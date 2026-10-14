@@ -9,7 +9,7 @@ export default function DemoSedesPage() {
         title="Sedes"
         subtitle="Dirección, WhatsApp y horario de atención de cada sede."
       />
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {fallbackSedes.map((s) => (
           <Panel key={s.slug} title={s.name}>
             <p className="flex items-start gap-2 text-sm text-navy-800">

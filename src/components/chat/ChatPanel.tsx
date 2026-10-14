@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { AlertTriangle, ArrowUp, Loader2, RotateCcw, Sparkles } from 'lucide-react'
+import { AlertTriangle, ArrowUp, Loader2, RotateCcw, Sparkles, X } from 'lucide-react'
 import { api, API_URL } from '@/lib/api'
 import { cn } from '@/lib/cn'
 import { MiniMarkdown } from './MiniMarkdown'
@@ -13,25 +13,27 @@ interface Message {
 }
 
 /**
- * Chat en tiempo real con el asistente (F7). Sólo vive en los dashboards:
+ * Conversación en tiempo real con el asistente (F7). Vive dentro del ChatWidget:
  * - endpoint '/patient/chat': el paciente pregunta sobre SU procedimiento.
  * - endpoint '/admin/chat': el equipo pregunta; con `patientId` usa la ficha abierta.
- * La respuesta llega por SSE y se va pintando a medida que el modelo escribe.
+ * La respuesta llega por SSE y se pinta a medida que el modelo escribe.
  */
 export function ChatPanel({
   endpoint,
   patientId,
+  subtitle,
   intro,
   suggestions,
   disclaimer,
-  className
+  onClose
 }: {
   endpoint: '/patient/chat' | '/admin/chat'
-  patientId?: string
+  patientId?: string | undefined
+  subtitle?: string | undefined
   intro: string
   suggestions: string[]
   disclaimer: string
-  className?: string
+  onClose?: () => void
 }) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -40,6 +42,7 @@ export function ChatPanel({
   const [alarm, setAlarm] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const scroller = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
   const query = patientId ? `?patientId=${patientId}` : ''
 
   useEffect(() => {
@@ -56,6 +59,14 @@ export function ChatPanel({
   useEffect(() => {
     scroller.current?.scrollTo({ top: scroller.current.scrollHeight, behavior: 'smooth' })
   }, [messages])
+
+  // El textarea crece con el texto hasta 4 líneas.
+  useEffect(() => {
+    const el = inputRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`
+  }, [input])
 
   async function send(text: string) {
     const message = text.trim()
@@ -127,22 +138,36 @@ export function ChatPanel({
   }
 
   return (
-    <div className={cn('flex min-h-0 flex-col border border-line bg-white', className)}>
-      <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-3">
-        <p className="flex items-center gap-2 text-sm font-semibold text-navy-900">
-          <span className="inline-flex size-8 items-center justify-center rounded-full bg-gold-100 text-gold-700">
-            <Sparkles className="size-4" aria-hidden />
-          </span>
-          Asistente del consultorio
-        </p>
+    <div className="flex h-full min-h-0 flex-col bg-white">
+      {/* Cabecera */}
+      <div className="flex shrink-0 items-center gap-3 bg-navy-900 px-4 py-3 text-white">
+        <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-gold-500 text-white">
+          <Sparkles className="size-4" aria-hidden />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold">Asistente del consultorio</p>
+          <p className="truncate text-[11px] text-white/60">{subtitle ?? 'En línea'}</p>
+        </div>
         {messages.length ? (
           <button
             type="button"
             onClick={reset}
             disabled={streaming}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted hover:text-navy-900"
+            className="inline-flex size-9 items-center justify-center rounded-full text-white/70 hover:bg-white/10 hover:text-white"
+            aria-label="Nueva conversación"
+            title="Nueva conversación"
           >
-            <RotateCcw className="size-3.5" aria-hidden /> Nueva conversación
+            <RotateCcw className="size-4" />
+          </button>
+        ) : null}
+        {onClose ? (
+          <button
+            type="button"
+            onClick={onClose}
+            className="inline-flex size-9 items-center justify-center rounded-full text-white/70 hover:bg-white/10 hover:text-white"
+            aria-label="Cerrar el asistente"
+          >
+            <X className="size-5" />
           </button>
         ) : null}
       </div>
@@ -150,30 +175,38 @@ export function ChatPanel({
       {alarm ? (
         <div
           role="alert"
-          className="flex gap-3 border-b border-danger/20 bg-danger/5 px-5 py-3 text-sm text-danger"
+          className="flex shrink-0 gap-3 border-b border-danger/20 bg-danger/5 px-4 py-3 text-[13px] text-danger"
         >
           <AlertTriangle className="mt-0.5 size-5 shrink-0" aria-hidden />
           <p>
             <strong>Si tienes un síntoma de alarma, no esperes:</strong> comunícate de inmediato con
-            el consultorio o acude al servicio de urgencias más cercano.
+            el consultorio o acude a urgencias.
           </p>
         </div>
       ) : null}
 
-      <div ref={scroller} className="flex-1 space-y-4 overflow-y-auto px-5 py-5" aria-live="polite">
+      {/* Mensajes */}
+      <div
+        ref={scroller}
+        className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain bg-cream-50 px-4 py-4"
+        aria-live="polite"
+      >
         {loading ? (
-          <Loader2 className="mx-auto size-6 animate-spin text-gold-500" aria-label="Cargando" />
+          <Loader2
+            className="mx-auto mt-6 size-6 animate-spin text-gold-500"
+            aria-label="Cargando"
+          />
         ) : messages.length === 0 ? (
-          <div className="mx-auto max-w-md py-6 text-center">
+          <div className="py-4 text-center">
             <p className="font-serif text-2xl text-navy-900">¿En qué te ayudo?</p>
-            <p className="mt-2 text-sm text-muted">{intro}</p>
-            <div className="mt-6 flex flex-wrap justify-center gap-2">
+            <p className="mx-auto mt-2 max-w-xs text-sm text-muted">{intro}</p>
+            <div className="mt-5 flex flex-col gap-2">
               {suggestions.map((s) => (
                 <button
                   key={s}
                   type="button"
                   onClick={() => send(s)}
-                  className="border border-line px-3 py-2 text-left text-xs text-navy-800 transition-colors hover:border-gold-500 hover:bg-cream-50"
+                  className="rounded-full border border-line bg-white px-4 py-2.5 text-left text-sm text-navy-800 transition-colors hover:border-gold-500"
                 >
                   {s}
                 </button>
@@ -188,10 +221,10 @@ export function ChatPanel({
             >
               <div
                 className={cn(
-                  'max-w-[85%] px-4 py-3 text-sm leading-relaxed',
+                  'max-w-[88%] px-3.5 py-2.5 text-sm leading-relaxed break-words',
                   m.role === 'USER'
-                    ? 'bg-navy-900 text-white'
-                    : 'border border-line bg-cream-50 text-ink'
+                    ? 'rounded-2xl rounded-br-sm bg-navy-900 text-white'
+                    : 'rounded-2xl rounded-bl-sm border border-line bg-white text-ink'
                 )}
               >
                 {m.role === 'ASSISTANT' ? (
@@ -212,9 +245,14 @@ export function ChatPanel({
         {error ? <p className="text-center text-xs text-danger">{error}</p> : null}
       </div>
 
-      <form onSubmit={onSubmit} className="border-t border-line p-3">
+      {/* Entrada: 16px en celular para que iOS no haga zoom; margen para la barra del sistema */}
+      <form
+        onSubmit={onSubmit}
+        className="shrink-0 border-t border-line bg-white px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+      >
         <div className="flex items-end gap-2">
           <textarea
+            ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
@@ -227,13 +265,14 @@ export function ChatPanel({
             maxLength={1000}
             placeholder="Escribe tu pregunta…"
             aria-label="Pregunta para el asistente"
-            className="max-h-32 min-h-11 flex-1 resize-none border border-line px-3 py-2.5 text-sm outline-none focus:border-gold-500"
+            enterKeyHint="send"
+            className="max-h-[120px] min-h-11 flex-1 resize-none rounded-2xl border border-line px-4 py-2.5 text-base outline-none focus:border-gold-500 sm:text-sm"
           />
           <button
             type="submit"
             disabled={!input.trim() || streaming}
             aria-label="Enviar"
-            className="inline-flex size-11 shrink-0 items-center justify-center bg-gold-500 text-white transition-colors hover:bg-gold-600 disabled:opacity-40"
+            className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-gold-500 text-white transition-colors hover:bg-gold-600 disabled:opacity-40"
           >
             {streaming ? (
               <Loader2 className="size-4 animate-spin" />
@@ -242,7 +281,7 @@ export function ChatPanel({
             )}
           </button>
         </div>
-        <p className="mt-2 text-[11px] text-muted">{disclaimer}</p>
+        <p className="mt-2 text-[10px] leading-snug text-muted">{disclaimer}</p>
       </form>
     </div>
   )

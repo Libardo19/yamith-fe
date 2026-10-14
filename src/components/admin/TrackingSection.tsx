@@ -91,7 +91,7 @@ function CaseCard({
 
   return (
     <Panel title={c.procedure.name} action={<CaseStatusBadge status={c.status} />}>
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Field label="Estado" htmlFor={`st-${c.id}`}>
           <Select
             id={`st-${c.id}`}
@@ -441,7 +441,7 @@ export function TrackingSection({
         <Panel>
           <form
             onSubmit={addCase}
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:items-end"
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:items-end"
           >
             <Field label="Procedimiento" htmlFor="nc-proc">
               <Select id="nc-proc" name="procedureId" required>
@@ -482,7 +482,7 @@ export function TrackingSection({
       ) : null}
 
       {data.cases.length ? (
-        <div className="grid gap-6 xl:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
           {data.cases.map((c) => (
             <CaseCard key={c.id} c={c} onChange={reload} notify={notify} />
           ))}
@@ -496,7 +496,7 @@ export function TrackingSection({
         </Panel>
       )}
 
-      <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.5fr_1fr]">
         <div className="space-y-6">
           <Panel title={`Fotos (${photos.length})`}>
             {photos.length ? (

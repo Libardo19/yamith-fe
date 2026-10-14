@@ -15,6 +15,7 @@ export function homeFor(user: SessionUser, next?: string | null): string {
 interface SessionState {
   user: SessionUser | null
   loading: boolean
+  error: string | null
   refresh: () => Promise<SessionUser | null>
   setUser: (user: SessionUser | null) => void
   logout: () => Promise<void>
@@ -36,20 +37,31 @@ export function SessionProvider({
   const router = useRouter()
   const [user, setUser] = useState<SessionUser | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const load = useCallback(
     () =>
-      api<SessionUser>('/auth/me').catch((err: unknown) => {
-        if (err instanceof ApiError && err.status === 401 && require) {
-          router.replace(`/login?next=${encodeURIComponent(window.location.pathname)}`)
-        }
-        return null
-      }),
+      api<SessionUser>('/auth/me', { signal: AbortSignal.timeout(10000) })
+        .then((me) => {
+          setError(null)
+          return me
+        })
+        .catch((err: unknown) => {
+          if (!(err instanceof ApiError && err.status === 401))
+            setError('No pudimos comprobar tu sesión. Vuelve a intentarlo.')
+          else setError(null)
+          if (err instanceof ApiError && err.status === 401 && require) {
+            router.replace(`/login?next=${encodeURIComponent(window.location.pathname)}`)
+          }
+          return null
+        }),
     [require, router]
   )
 
   const refresh = useCallback(async () => {
+    setLoading(true)
     const me = await load()
+    setLoading(false)
     setUser(me)
     return me
   }, [load])
@@ -76,13 +88,18 @@ export function SessionProvider({
   }, [user, require, router])
 
   const logout = useCallback(async () => {
-    await api('/auth/logout', { method: 'POST' }).catch(() => undefined)
+    try {
+      await api('/auth/logout', { method: 'POST', signal: AbortSignal.timeout(10000) })
+    } catch {
+      setError('No pudimos cerrar la sesión. Vuelve a intentarlo.')
+      return
+    }
     setUser(null)
-    router.replace('/login')
-  }, [router])
+    window.location.replace('/')
+  }, [])
 
   return (
-    <SessionContext.Provider value={{ user, loading, refresh, setUser, logout }}>
+    <SessionContext.Provider value={{ user, loading, error, refresh, setUser, logout }}>
       {children}
     </SessionContext.Provider>
   )

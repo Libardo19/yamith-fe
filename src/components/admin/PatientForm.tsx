@@ -48,7 +48,7 @@ export function PatientForm({
   }
 
   return (
-    <form onSubmit={handle} noValidate className="grid gap-6 sm:grid-cols-2">
+    <form onSubmit={handle} noValidate className="grid grid-cols-1 gap-6 sm:grid-cols-2">
       <Field label="Nombres" htmlFor="firstName" error={e('firstName')}>
         <Input id="firstName" name="firstName" defaultValue={initial?.firstName} required />
       </Field>

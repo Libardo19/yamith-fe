@@ -21,17 +21,22 @@ export function SedeCard({ sede, tone = 'light' }: { sede: Sede; tone?: 'light' 
       <p
         className={cn('mt-2 flex-1 text-sm leading-relaxed', dark ? 'text-white/60' : 'text-muted')}
       >
-        {sede.address}
+        {!/pendiente/i.test(sede.address) ? sede.address : sede.city}
       </p>
       <a
         href={
           pending
-            ? '#agendar'
+            ? '#formulario-valoracion'
             : whatsappLink(sede.whatsapp, `Hola, quiero agendar una valoración en la ${sede.name}.`)
         }
         target={pending ? undefined : '_blank'}
         rel="noopener noreferrer"
-        onClick={() => track('whatsapp_click', { ubicacion: 'sede', sede: sede.slug })}
+        onClick={() =>
+          track(pending ? 'agendar_click' : 'whatsapp_click', {
+            ubicacion: 'sede',
+            sede: sede.slug
+          })
+        }
         className={cn(
           'mt-6 inline-flex items-center justify-center gap-2 border px-4 py-2.5 text-[11px] font-semibold tracking-[0.16em] uppercase transition-colors',
           dark
@@ -40,7 +45,7 @@ export function SedeCard({ sede, tone = 'light' }: { sede: Sede; tone?: 'light' 
         )}
       >
         <MessageCircle className="size-4" aria-hidden />
-        WhatsApp {sede.city}
+        {pending ? 'Agendar en' : 'WhatsApp'} {sede.city}
       </a>
     </article>
   )

@@ -33,13 +33,13 @@ export default function DemoSurveysPage() {
         subtitle="Se envían solas una hora después de dar de alta un procedimiento."
       />
       <div className="space-y-6">
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <StatTile label="Enviadas" value={42} />
           <StatTile label="Respondidas" value={31} delta="74 % de respuesta" />
           <StatTile label="Satisfacción promedio" value="4.8 / 5" />
           <StatTile label="NPS" value={81} delta="% que recomienda menos % que no" />
         </div>
-        <div className="grid gap-6 xl:grid-cols-[1fr_1.6fr]">
+        <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_1.6fr]">
           <Panel title="Calificaciones">
             <BarList
               data={[

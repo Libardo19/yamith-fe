@@ -9,7 +9,7 @@ import type { Overview } from '@/types/api'
 export function OverviewView({ data, base }: { data: Overview; base: string }) {
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatTile
           label="Pacientes activos"
           value={data.activePatients}
@@ -44,7 +44,7 @@ export function OverviewView({ data, base }: { data: Overview; base: string }) {
         />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.4fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.4fr_1fr]">
         <Panel
           title="Procedimientos por sede"
           action={<span className="text-xs text-muted">Histórico</span>}

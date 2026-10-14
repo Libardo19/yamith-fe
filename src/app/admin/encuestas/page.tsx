@@ -25,7 +25,7 @@ export default function SurveysPage() {
         <LoadingBlock />
       ) : (
         <div className="space-y-6">
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <StatTile label="Enviadas" value={data.sent} />
             <StatTile
               label="Respondidas"
@@ -47,7 +47,7 @@ export default function SurveysPage() {
             />
           </div>
 
-          <div className="grid gap-6 xl:grid-cols-[1fr_1.6fr]">
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_1.6fr]">
             <Panel title="Calificaciones">
               {data.answered ? (
                 <BarList

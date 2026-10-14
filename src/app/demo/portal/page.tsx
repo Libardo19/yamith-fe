@@ -38,7 +38,7 @@ export default function DemoPortalHome() {
         </div>
       </section>
 
-      <div className="grid gap-6 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <Panel title="Tu próxima cita" className="xl:col-span-1">
           <p className="font-serif text-2xl text-navy-900">{fmtLongDate(f.nextAppointment)}</p>
           <ul className="mt-5 space-y-3 text-sm text-navy-800">
@@ -81,7 +81,7 @@ export default function DemoPortalHome() {
         </Panel>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.5fr_1fr]">
         <Panel title="Últimas novedades">
           <Timeline items={f.timeline.slice(-3)} />
         </Panel>
