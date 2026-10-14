@@ -47,8 +47,8 @@ export function DoctorExperience() {
           </h2>
           <p>
             El Dr. Yamith Cuello cuenta con 7 años de experiencia en cirugía plástica, estética y
-            reconstructiva. Su práctica parte de escuchar tus objetivos y evaluar las
-            características que hacen único cada caso.
+            reconstructiva, y más de 2.000 cirugías realizadas. Su práctica parte de escuchar tus
+            objetivos y evaluar las características que hacen único cada caso.
           </p>
           <p>
             La indicación de una cirugía requiere revisar antecedentes, calidad de los tejidos,
@@ -73,6 +73,8 @@ export function DoctorExperience() {
           <figcaption className="doctor-experience-number">
             <strong>{doctor.stats.years}</strong>
             <span>años de experiencia</span>
+            <strong className="doctor-experience-divider">+{doctor.stats.surgeries}</strong>
+            <span>cirugías realizadas</span>
           </figcaption>
         </figure>
       </div>

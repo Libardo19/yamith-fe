@@ -110,7 +110,7 @@ export const doctor = {
   philosophy:
     'Cada paciente tiene una historia, unas expectativas y unas características propias. La valoración individual es el punto de partida para definir un plan que integre criterio médico, proporción y una visión estética natural.',
   paragraphs: [
-    'El Dr. Yamith Cuello es cirujano plástico, estético y reconstructivo con 7 años de experiencia. Su enfoque combina la valoración individual, la precisión quirúrgica y una visión estética orientada a la armonía y la proporción.',
+    'El Dr. Yamith Cuello es cirujano plástico, estético y reconstructivo con 7 años de experiencia y más de 2.000 cirugías realizadas. Su enfoque combina la valoración individual, la precisión quirúrgica y una visión estética orientada a la armonía y la proporción.',
     'La historia clínica, las características de cada paciente y sus expectativas orientan la planificación. Una comunicación clara sobre las opciones y los alcances de cada procedimiento permite tomar decisiones informadas.',
     'Atiende en Pereira, Barranquilla y Valledupar, con valoraciones presenciales o virtuales y acompañamiento antes, durante y después del procedimiento.'
   ],
@@ -119,13 +119,18 @@ export const doctor = {
     'Atención en Pereira, Barranquilla y Valledupar',
     'Valoración presencial o virtual y seguimiento posoperatorio'
   ],
-  /** Experiencia confirmada por el doctor (octubre 2026). */
-  stats: { years: 7 },
+  /** Cifras confirmadas por el doctor (octubre 2026). */
+  stats: { years: 7, surgeries: '2.000' },
   /** Credenciales: `pending` = falta confirmar con el doctor (no se publican). */
   credentials: [
     {
       title: '7 años de experiencia',
       text: 'Cirugía plástica, estética y reconstructiva.',
+      pending: false
+    },
+    {
+      title: 'Más de 2.000 cirugías',
+      text: 'Realizadas por el Dr. Yamith Cuello.',
       pending: false
     },
     {
@@ -207,8 +212,9 @@ export const gallery = [
 ]
 
 /**
- * Respaldo de sedes si el API no responde. No hay teléfonos ni direcciones
- * confirmadas aquí; el panel admin permite configurar los datos reales.
+ * Respaldo de sedes si el API no responde. Direcciones y WhatsApp PENDIENTES:
+ * el WhatsApp es el mismo del sitio anterior (lo único que se conserva) y se
+ * carga desde el panel admin → Sedes.
  */
 export const fallbackSedes: Sede[] = [
   {
@@ -216,8 +222,8 @@ export const fallbackSedes: Sede[] = [
     slug: 'pereira',
     name: 'Sede Pereira',
     city: 'Pereira',
-    address: '',
-    whatsapp: '',
+    address: 'Dirección pendiente',
+    whatsapp: '570000000000',
     phone: null,
     mapUrl: null,
     imageUrl: null
@@ -227,8 +233,8 @@ export const fallbackSedes: Sede[] = [
     slug: 'barranquilla',
     name: 'Sede Barranquilla',
     city: 'Barranquilla',
-    address: '',
-    whatsapp: '',
+    address: 'Dirección pendiente',
+    whatsapp: '570000000000',
     phone: null,
     mapUrl: null,
     imageUrl: null
@@ -238,8 +244,8 @@ export const fallbackSedes: Sede[] = [
     slug: 'valledupar',
     name: 'Sede Valledupar',
     city: 'Valledupar',
-    address: '',
-    whatsapp: '',
+    address: 'Dirección pendiente',
+    whatsapp: '570000000000',
     phone: null,
     mapUrl: null,
     imageUrl: null

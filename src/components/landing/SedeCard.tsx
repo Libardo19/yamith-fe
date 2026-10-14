@@ -26,7 +26,7 @@ export function SedeCard({ sede, tone = 'light' }: { sede: Sede; tone?: 'light' 
       <a
         href={
           pending
-            ? '#formulario-valoracion'
+            ? '#agendar'
             : whatsappLink(sede.whatsapp, `Hola, quiero agendar una valoración en la ${sede.name}.`)
         }
         target={pending ? undefined : '_blank'}

@@ -59,8 +59,12 @@
   max-width: 90px;
   font-size: 14px;
 }
+.doctor-experience-number .doctor-experience-divider {
+  padding-left: 24px;
+  border-left: 1px solid var(--color-navy-700);
+}
 @media (max-width: 767px) {
-  /* La cifra y su descripción conservan el mismo bloque en celular. */
+  /* En celular las dos cifras van una debajo de la otra */
   .doctor-experience-number {
     display: grid;
     grid-template-columns: auto auto;
@@ -72,6 +76,17 @@
   .doctor-experience-number span {
     max-width: none;
     font-size: 12px;
+  }
+  .doctor-experience-number .doctor-experience-divider,
+  .doctor-experience-number .doctor-experience-divider + span {
+    padding: 10px 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--color-navy-700);
+  }
+  .doctor-experience-number .doctor-experience-divider + span {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
   }
 }
 .doctor-techniques {

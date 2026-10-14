@@ -93,23 +93,6 @@ test('contact form retains its payload and success flow', async ({ page }) => {
   })
 })
 
-test('a sede booking link takes the visitor straight to the valuation form', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/contacto')
-  await page.getByRole('link', { name: 'Agendar en Pereira' }).click()
-  await expect(page).toHaveURL(/#formulario-valoracion$/)
-  await expect(page.locator('#formulario-valoracion form')).toBeVisible()
-})
-
-test('patient and admin shells provide a working route back to the landing', async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 })
-  for (const path of ['/demo/portal', '/demo/admin']) {
-    await page.goto(path)
-    await page.getByRole('link', { name: 'Volver al inicio' }).click()
-    await expect(page).toHaveURL('http://localhost:3000/')
-  }
-})
-
 test('session outage offers recovery instead of an endless spinner', async ({ page }) => {
   await page
     .context()

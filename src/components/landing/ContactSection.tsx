@@ -31,7 +31,7 @@ export function ContactSection({
             ))}
           </div>
         </div>
-        <div id="formulario-valoracion" className="bg-white p-6 shadow-2xl shadow-black/30 sm:p-10">
+        <div className="bg-white p-6 shadow-2xl shadow-black/30 sm:p-10">
           <h3 className="text-3xl">Agenda tu cita</h3>
           <p className="mt-2 mb-8 text-sm text-muted">Te responderemos lo antes posible.</p>
           <ContactForm
