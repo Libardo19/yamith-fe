@@ -14,7 +14,8 @@ import {
 import { brand } from '@/content/site'
 
 export const metadata: Metadata = {
-  title: 'Dr. Yamith Cuello',
+  title: { absolute: 'Dr. Yamith Cuello · Cirujano plástico en Colombia' },
+  alternates: { canonical: '/sobre-el-doctor' },
   description: `${brand.specialty} con 7 años de experiencia y más de 2.000 cirugías. Conoce su enfoque de lipoabdominoplastia, valoración individual y atención en Pereira, Barranquilla y Valledupar.`
 }
 

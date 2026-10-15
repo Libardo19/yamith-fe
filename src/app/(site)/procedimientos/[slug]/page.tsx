@@ -6,6 +6,7 @@ import { Process } from '@/components/landing/Process'
 import { ProcedureArticle } from '@/components/landing/ProcedureArticle'
 import { LandingMotion } from '@/components/landing/LandingMotion'
 import { ReferenceFaq, ReferenceTechnology } from '@/components/landing/ReferenceLanding'
+import { ProcedureJsonLd } from '@/components/seo/JsonLd'
 import { ButtonLink } from '@/components/ui/Button'
 import { categoryLabels } from '@/content/site'
 import { technologyImage } from '@/content/technology-images'
@@ -24,6 +25,7 @@ export async function generateMetadata(
   return {
     title: p.seoTitle ?? p.name,
     description: p.seoDescription ?? p.summary,
+    alternates: { canonical: `/procedimientos/${p.slug}` },
     openGraph: p.imageUrl ? { images: [p.imageUrl] } : null
   }
 }
@@ -39,6 +41,7 @@ export default async function ProcedurePage(props: PageProps<'/procedimientos/[s
 
   return (
     <LandingMotion>
+      <ProcedureJsonLd procedure={procedure} />
       <section className="procedure-detail-hero bg-navy-950 text-cream-50">
         <div className="container-page grid items-center gap-12 py-14 lg:grid-cols-2 lg:py-20">
           <div>

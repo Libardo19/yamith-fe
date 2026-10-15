@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { Hero } from '@/components/landing/Hero'
 import { LandingMotion } from '@/components/landing/LandingMotion'
 import {
@@ -15,6 +16,9 @@ import { JsonLd } from '@/components/seo/JsonLd'
 import { getGallery, getProcedures, getSedes } from '@/lib/public-data'
 import { valuationFaq } from '@/content/site'
 import './landing.css'
+
+export const metadata: Metadata = { alternates: { canonical: '/' } }
+
 export default async function HomePage() {
   const [procedures, sedes, results] = await Promise.all([
     getProcedures(),

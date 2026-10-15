@@ -5,7 +5,8 @@ import { LandingMotion } from '@/components/landing/LandingMotion'
 import { getProcedures, getSedes } from '@/lib/public-data'
 
 export const metadata: Metadata = {
-  title: 'Contacto',
+  title: 'Agenda tu valoración',
+  alternates: { canonical: '/contacto' },
   description: 'Agenda tu valoración presencial o virtual en Pereira, Barranquilla o Valledupar.'
 }
 

@@ -2,6 +2,7 @@ import { PublicFooter } from '@/components/layout/PublicFooter'
 import { ReloadToTop } from '@/components/layout/ReloadToTop'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { WhatsAppFloat } from '@/components/layout/WhatsAppFloat'
+import { MetaPixel } from '@/components/seo/MetaPixel'
 import { getSedes } from '@/lib/public-data'
 import './landing.css'
 
@@ -22,6 +23,7 @@ export default async function SiteLayout({ children }: LayoutProps<'/'>) {
       </main>
       <PublicFooter sedes={sedes} />
       <WhatsAppFloat whatsapp={sedes[0]?.whatsapp ?? ''} />
+      <MetaPixel />
     </>
   )
 }

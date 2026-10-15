@@ -10,7 +10,8 @@ import { getProcedures } from '@/lib/public-data'
 import type { ProcedureCategory } from '@/types/api'
 
 export const metadata: Metadata = {
-  title: 'Procedimientos',
+  title: 'Procedimientos de cirugía plástica',
+  alternates: { canonical: '/procedimientos' },
   description:
     'Cirugía corporal, mamaria y facial: conoce los procedimientos del Dr. Yamith Cuello y agenda una valoración individual.'
 }
