@@ -19,14 +19,23 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} · Cirujano Plástico Estético y Reconstructivo`,
+    default: `Cirujano Plástico en Colombia · ${siteConfig.name} | Pereira, Barranquilla, Valledupar`,
     template: `%s · ${siteConfig.name}`
   },
   description: siteConfig.description,
   openGraph: {
     type: 'website',
     locale: 'es_CO',
-    siteName: siteConfig.name
+    siteName: siteConfig.name,
+    images: [{ url: '/images/doctor-hero-editorial.webp', alt: siteConfig.name }]
+  },
+  twitter: { card: 'summary_large_image' },
+  // Códigos de Search Console y de verificación de dominio de Meta (Business Manager).
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: process.env.NEXT_PUBLIC_META_DOMAIN_VERIFICATION
+      ? { 'facebook-domain-verification': process.env.NEXT_PUBLIC_META_DOMAIN_VERIFICATION }
+      : undefined
   }
 }
 

@@ -3,7 +3,9 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, type ReactNode } from 'react'
-import { Bell, LogOut, Menu, X } from 'lucide-react'
+import { ArrowLeft, Bell, LogOut, Menu, X } from 'lucide-react'
+import { ChatWidget } from '@/components/chat/ChatWidget'
+import { ChatSubjectProvider } from '@/components/chat/chat-subject'
 import { Logo } from '@/components/ui/Logo'
 import { cn } from '@/lib/cn'
 import { adminNav, portalNav } from './nav'
@@ -133,6 +135,16 @@ export function AppShell({
         })}
       </nav>
       <div className="border-t border-line p-3">
+        {
+          <Link
+            href="/"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-3 px-3 py-2.5 text-[13px] text-navy-800/80 hover:bg-cream-100"
+          >
+            <ArrowLeft className="size-[18px] text-muted" aria-hidden />
+            Volver al inicio
+          </Link>
+        }
         {onLogout ? (
           <button
             type="button"
@@ -156,60 +168,64 @@ export function AppShell({
   )
 
   return (
-    <div className="flex min-h-screen bg-cream-100" data-clarity-mask="true">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-line bg-white lg:block">
-        {sidebar}
-      </aside>
+    <ChatSubjectProvider>
+      <div className="flex min-h-screen bg-cream-100" data-clarity-mask="true">
+        <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 border-r border-line bg-white lg:block">
+          {sidebar}
+        </aside>
 
-      {open ? (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          <button
-            type="button"
-            aria-label="Cerrar menú"
-            className="absolute inset-0 bg-navy-950/40"
-            onClick={() => setOpen(false)}
-          />
-          <aside className="absolute inset-y-0 left-0 w-72 bg-white shadow-xl">{sidebar}</aside>
-        </div>
-      ) : null}
-
-      <div className="flex min-w-0 flex-1 flex-col lg:pl-64">
-        {demo ? (
-          <div className="bg-navy-900 px-4 py-2 text-center text-xs text-gold-300">
-            Borrador visual con datos de ejemplo · Así se verá el{' '}
-            {area === 'admin' ? 'panel del consultorio' : 'portal del paciente'}
+        {open ? (
+          <div className="fixed inset-0 z-40 lg:hidden">
+            <button
+              type="button"
+              aria-label="Cerrar menú"
+              className="absolute inset-0 bg-navy-950/40"
+              onClick={() => setOpen(false)}
+            />
+            <aside className="absolute inset-y-0 left-0 w-72 bg-white shadow-xl">{sidebar}</aside>
           </div>
         ) : null}
-        <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-line bg-white/95 px-4 backdrop-blur sm:px-8">
-          <button
-            type="button"
-            className="inline-flex size-10 items-center justify-center text-navy-900 lg:hidden"
-            onClick={() => setOpen(true)}
-            aria-label="Abrir menú"
-          >
-            {open ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-          <div className="flex-1" />
-          <button
-            type="button"
-            className="relative inline-flex size-10 items-center justify-center text-muted hover:text-navy-900"
-            aria-label="Notificaciones"
-          >
-            <Bell className="size-5" />
-            {demo ? (
-              <span className="absolute top-2 right-2.5 size-2 rounded-full bg-gold-500" />
-            ) : null}
-          </button>
-          <div className="flex items-center gap-3 border-l border-line pl-4">
-            <div className="hidden text-right sm:block">
-              <p className="text-sm font-semibold text-navy-900">{user.name}</p>
-              <p className="text-[11px] text-muted">{roleLabel[user.role]}</p>
+
+        <div className="flex min-w-0 flex-1 flex-col lg:pl-64">
+          {demo ? (
+            <div className="bg-navy-900 px-4 py-2 text-center text-xs text-gold-300">
+              Borrador visual con datos de ejemplo · Así se verá el{' '}
+              {area === 'admin' ? 'panel del consultorio' : 'portal del paciente'}
             </div>
-            <Avatar name={user.name} url={user.avatarUrl ?? null} />
-          </div>
-        </header>
-        <main className="flex-1 px-4 py-8 sm:px-8">{children}</main>
+          ) : null}
+          <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-line bg-white/95 px-4 backdrop-blur sm:px-8">
+            <button
+              type="button"
+              className="inline-flex size-10 items-center justify-center text-navy-900 lg:hidden"
+              onClick={() => setOpen(true)}
+              aria-label="Abrir menú"
+            >
+              {open ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
+            <div className="flex-1" />
+            <button
+              type="button"
+              className="relative inline-flex size-10 items-center justify-center text-muted hover:text-navy-900"
+              aria-label="Notificaciones"
+            >
+              <Bell className="size-5" />
+              {demo ? (
+                <span className="absolute top-2 right-2.5 size-2 rounded-full bg-gold-500" />
+              ) : null}
+            </button>
+            <div className="flex items-center gap-3 border-l border-line pl-4">
+              <div className="hidden text-right sm:block">
+                <p className="text-sm font-semibold text-navy-900">{user.name}</p>
+                <p className="text-[11px] text-muted">{roleLabel[user.role]}</p>
+              </div>
+              <Avatar name={user.name} url={user.avatarUrl ?? null} />
+            </div>
+          </header>
+          {/* pb-24: el contenido final no queda tapado por el botón del asistente */}
+          <main className="flex-1 px-4 pt-8 pb-24 sm:px-8">{children}</main>
+        </div>
+        <ChatWidget area={area} demo={demo} />
       </div>
-    </div>
+    </ChatSubjectProvider>
   )
 }

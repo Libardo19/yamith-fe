@@ -14,7 +14,7 @@ export default function DemoMyProcedure() {
   return (
     <>
       <PageHeader title="Mi procedimiento" subtitle={`${f.procedure} · ${f.sede}`} />
-      <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.5fr_1fr]">
         <div className="space-y-6">
           <Panel title="Avance" action={<CaseStatusBadge status={f.status} />}>
             <p className="mb-6 text-sm text-muted">

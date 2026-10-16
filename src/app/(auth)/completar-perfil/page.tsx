@@ -49,7 +49,7 @@ export default function CompleteProfilePage() {
       title="Completa tu perfil"
       subtitle="Necesitamos tu celular para coordinar tus citas y tu autorización para el tratamiento de datos."
     >
-      <form onSubmit={onSubmit} noValidate className="grid gap-6 sm:grid-cols-2">
+      <form onSubmit={onSubmit} noValidate className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <Field label="Nombre" htmlFor="firstName" error={errors['firstName']}>
           <Input id="firstName" name="firstName" defaultValue={user.patient?.firstName ?? ''} />
         </Field>

@@ -3,9 +3,11 @@ import { MonthCalendar } from '@/components/admin/MonthCalendar'
 import { PageHeader, Panel, capitalizeFirst } from '@/components/app/ui'
 import { Button } from '@/components/ui/Button'
 import { demoCalendar } from '@/lib/demo-data'
+import { todayKey } from '@/lib/bogota'
 
 export default function DemoCalendarPage() {
   const month = new Date()
+  const today = todayKey()
   const label = capitalizeFirst(
     month.toLocaleDateString('es-CO', { month: 'long', year: 'numeric' })
   )
@@ -52,7 +54,12 @@ export default function DemoCalendarPage() {
             </span>
           </div>
         </div>
-        <MonthCalendar month={month} events={demoCalendar} />
+        <MonthCalendar
+          year={Number(today.slice(0, 4))}
+          month={Number(today.slice(5, 7))}
+          today={today}
+          events={demoCalendar}
+        />
       </Panel>
     </>
   )

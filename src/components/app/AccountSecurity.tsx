@@ -65,7 +65,7 @@ export function AccountSecurity() {
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <Panel title={user.hasPassword ? 'Cambiar contraseña' : 'Crear contraseña'}>
         {!user.hasPassword ? (
           <p className="mb-6 text-sm text-muted">

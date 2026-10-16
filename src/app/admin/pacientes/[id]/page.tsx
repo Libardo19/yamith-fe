@@ -4,12 +4,16 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { ArrowLeft, CalendarDays, Mail, Phone, Send } from 'lucide-react'
+import { Drawer } from '@/components/admin/Drawer'
+import { ChatSubject } from '@/components/chat/chat-subject'
+import { NewAppointmentForm } from '@/components/admin/NewAppointmentForm'
 import { PatientForm } from '@/components/admin/PatientForm'
+import { TrackingSection } from '@/components/admin/TrackingSection'
 import { Avatar } from '@/components/app/AppShell'
 import { LoadingBlock } from '@/components/app/SessionShell'
 import {
   AccountStatusBadge,
-  CaseStatusBadge,
+  AppointmentStatusBadge,
   EmptyState,
   Panel,
   appointmentTypeLabel,
@@ -24,10 +28,11 @@ import type { PatientDetail, Sede } from '@/types/api'
 
 export default function PatientDetailPage() {
   const { id } = useParams<{ id: string }>()
-  const { data: p, error, setData } = useApi<PatientDetail>(`/admin/patients/${id}`)
+  const { data: p, error, setData, reload } = useApi<PatientDetail>(`/admin/patients/${id}`)
   const { data: sedes } = useApi<Sede[]>('/admin/sedes')
   const [editing, setEditing] = useState(false)
   const [notice, setNotice] = useState<{ tone: 'success' | 'error'; text: string } | null>(null)
+  const [booking, setBooking] = useState(false)
 
   if (error) return <Alert tone="error">{error}</Alert>
   if (!p || !sedes) return <LoadingBlock />
@@ -50,6 +55,7 @@ export default function PatientDetailPage() {
 
   return (
     <>
+      <ChatSubject patientId={p.id} name={name} />
       <Link
         href="/admin/pacientes"
         className="mb-6 inline-flex items-center gap-2 text-sm text-muted hover:text-navy-900"
@@ -184,33 +190,16 @@ export default function PatientDetailPage() {
         </Panel>
       ) : null}
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-2">
-        <Panel title="Procedimientos" bodyClassName="p-0">
-          {p.cases.length ? (
-            <ul className="divide-y divide-line">
-              {p.cases.map((c) => (
-                <li key={c.id} className="flex items-center justify-between gap-4 px-6 py-4">
-                  <span>
-                    <span className="block font-semibold text-navy-900">{c.procedure.name}</span>
-                    <span className="text-xs text-muted">
-                      {c.sede?.name ?? 'Sin sede'} ·{' '}
-                      {c.surgeryDate
-                        ? `Cirugía ${fmtDate(c.surgeryDate)}`
-                        : `Creado ${fmtDate(c.createdAt)}`}
-                    </span>
-                  </span>
-                  <CaseStatusBadge status={c.status} />
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <EmptyState
-              title="Sin procedimientos"
-              text="El seguimiento de procedimientos (línea de tiempo, fotos y documentos) llega en la fase F4."
-            />
-          )}
-        </Panel>
-        <Panel title="Citas" bodyClassName="p-0">
+      <div className="mt-6">
+        <Panel
+          title="Citas"
+          bodyClassName="p-0"
+          action={
+            <Button variant="outline" className="px-3 py-2" onClick={() => setBooking(true)}>
+              Nueva cita
+            </Button>
+          }
+        >
           {p.appointments.length ? (
             <ul className="divide-y divide-line">
               {p.appointments.map((a) => (
@@ -220,14 +209,40 @@ export default function PatientDetailPage() {
                   <span className="text-xs text-muted">
                     {appointmentTypeLabel[a.type]} · {a.sede.name}
                   </span>
+                  <AppointmentStatusBadge status={a.status} />
                 </li>
               ))}
             </ul>
           ) : (
-            <EmptyState title="Sin citas" text="La agenda en línea llega en la fase F3." />
+            <EmptyState
+              title="Sin citas"
+              text="Agenda una cita para este paciente o deja que la agende desde su portal."
+            />
           )}
         </Panel>
       </div>
+
+      <div className="mt-10">
+        <TrackingSection
+          patientId={p.id}
+          sedes={sedes}
+          notify={(tone, text) => setNotice({ tone, text })}
+        />
+      </div>
+
+      {booking ? (
+        <Drawer title="Nueva cita" onClose={() => setBooking(false)}>
+          <NewAppointmentForm
+            sedes={sedes}
+            defaultPatient={{ id: p.id, name }}
+            onCreated={(message) => {
+              setBooking(false)
+              setNotice({ tone: 'success', text: message })
+              reload()
+            }}
+          />
+        </Drawer>
+      ) : null}
     </>
   )
 }

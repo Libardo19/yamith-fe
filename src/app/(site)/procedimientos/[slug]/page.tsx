@@ -1,11 +1,15 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { CheckCircle2 } from 'lucide-react'
 import { ContactSection } from '@/components/landing/ContactSection'
 import { Process } from '@/components/landing/Process'
+import { ProcedureArticle } from '@/components/landing/ProcedureArticle'
+import { LandingMotion } from '@/components/landing/LandingMotion'
+import { ReferenceFaq, ReferenceTechnology } from '@/components/landing/ReferenceLanding'
+import { ProcedureJsonLd } from '@/components/seo/JsonLd'
 import { ButtonLink } from '@/components/ui/Button'
 import { categoryLabels } from '@/content/site'
+import { technologyImage } from '@/content/technology-images'
 import { getProcedure, getProcedures, getSedes } from '@/lib/public-data'
 
 export async function generateStaticParams() {
@@ -21,6 +25,7 @@ export async function generateMetadata(
   return {
     title: p.seoTitle ?? p.name,
     description: p.seoDescription ?? p.summary,
+    alternates: { canonical: `/procedimientos/${p.slug}` },
     openGraph: p.imageUrl ? { images: [p.imageUrl] } : null
   }
 }
@@ -35,13 +40,20 @@ export default async function ProcedurePage(props: PageProps<'/procedimientos/[s
   if (!procedure) notFound()
 
   return (
-    <>
-      <section className="bg-cream-50">
+    <LandingMotion>
+      <ProcedureJsonLd procedure={procedure} />
+      <section className="procedure-detail-hero bg-navy-950 text-cream-50">
         <div className="container-page grid items-center gap-12 py-14 lg:grid-cols-2 lg:py-20">
           <div>
-            <p className="eyebrow">Cirugía {categoryLabels[procedure.category].toLowerCase()}</p>
+            <p className="eyebrow text-gold-300">
+              {procedure.slug === 'recuperacion-posoperatoria'
+                ? 'Seguimiento posoperatorio'
+                : procedure.slug === 'retraccion-de-piel'
+                  ? 'Tecnología de contorno corporal'
+                  : 'Cirugía ' + categoryLabels[procedure.category].toLowerCase()}
+            </p>
             <h1 className="mt-4 text-5xl leading-tight sm:text-6xl">{procedure.name}</h1>
-            <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-muted">
+            <p className="mt-6 max-w-lg text-[17px] leading-relaxed text-cream-200">
               {procedure.summary}
             </p>
             <ButtonLink href="#agendar" className="mt-9">
@@ -49,75 +61,34 @@ export default async function ProcedurePage(props: PageProps<'/procedimientos/[s
             </ButtonLink>
           </div>
           {procedure.imageUrl ? (
-            <div className="relative aspect-[4/3] overflow-hidden bg-cream-200 shadow-2xl shadow-navy-900/10">
+            <div className="relative aspect-[4/5] overflow-hidden bg-navy-900">
               <Image
-                src={procedure.imageUrl}
-                alt=""
+                src={technologyImage(procedure.imageUrl)}
+                alt={procedure.name}
                 fill
-                priority
+                preload
                 sizes="(min-width: 1024px) 45vw, 90vw"
-                className="object-cover"
+                className={
+                  technologyImage(procedure.imageUrl).includes('-studio.')
+                    ? 'object-contain p-8'
+                    : 'object-cover'
+                }
               />
             </div>
           ) : null}
         </div>
       </section>
 
-      <section className="bg-white py-16 sm:py-20">
-        <div className="container-page grid gap-12 lg:grid-cols-[1.4fr_1fr]">
-          <div>
-            <h2 className="text-3xl">Sobre el procedimiento</h2>
-            <span className="mt-5 block h-px w-12 bg-gold-500" />
-            {procedure.content.split('\n\n').map((para) => (
-              <p key={para.slice(0, 24)} className="mt-5 leading-relaxed text-muted">
-                {para}
-              </p>
-            ))}
-          </div>
-          {procedure.benefits.length ? (
-            <aside className="self-start border border-line bg-cream-50 p-8">
-              <h2 className="text-xl">Beneficios principales</h2>
-              <ul className="mt-6 space-y-4">
-                {procedure.benefits.map((b) => (
-                  <li key={b} className="flex items-start gap-3 text-sm text-navy-800">
-                    <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-gold-500" aria-hidden />
-                    {b}
-                  </li>
-                ))}
-              </ul>
-            </aside>
-          ) : null}
-        </div>
-      </section>
+      <ProcedureArticle procedure={procedure} />
 
-      <Process />
+      <Process recovery={procedure.slug === 'recuperacion-posoperatoria'} />
 
       {procedure.faq.length ? (
-        <section className="bg-white py-16 sm:py-20">
-          <div className="container-page max-w-3xl">
-            <h2 className="text-center text-3xl">Preguntas frecuentes</h2>
-            <span className="mx-auto mt-5 block h-px w-12 bg-gold-500" />
-            <div className="mt-10 divide-y divide-line border-y border-line">
-              {procedure.faq.map((f) => (
-                <details key={f.question} className="group py-5">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-serif text-lg text-navy-900">
-                    {f.question}
-                    <span
-                      className="text-2xl text-gold-500 transition-transform group-open:rotate-45"
-                      aria-hidden
-                    >
-                      +
-                    </span>
-                  </summary>
-                  <p className="mt-3 leading-relaxed text-muted">{f.answer}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
+        <ReferenceFaq items={procedure.faq} procedureName={procedure.name} />
       ) : null}
+      <ReferenceTechnology />
 
       <ContactSection sedes={sedes} procedures={procedures} defaultProcedure={procedure.slug} />
-    </>
+    </LandingMotion>
   )
 }

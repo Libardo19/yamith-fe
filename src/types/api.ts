@@ -126,7 +126,7 @@ export interface PatientDetail {
     id: string
     startsAt: string
     type: AppointmentType
-    status: string
+    status: AppointmentStatus
     sede: { name: string }
   }>
 }
@@ -169,4 +169,147 @@ export interface Overview {
     patient: { id: string; firstName: string; lastName: string }
     sede: { name: string }
   }>
+}
+
+// ── Agenda (F3) ──────────────────────────────────────────────
+
+export type AppointmentStatus =
+  'PENDIENTE' | 'CONFIRMADA' | 'REPROGRAMADA' | 'CANCELADA' | 'ATENDIDA' | 'NO_ASISTIO'
+
+export interface Appointment {
+  id: string
+  startsAt: string
+  endsAt: string
+  type: AppointmentType
+  modality: 'PRESENCIAL' | 'VIRTUAL'
+  status: AppointmentStatus
+  notes: string | null
+  cancelReason: string | null
+  rescheduledFromId: string | null
+  sede: { id?: string; name: string; city: string; address?: string }
+  patient?: {
+    id: string
+    firstName: string
+    lastName: string
+    phone: string | null
+    user: { email: string }
+  }
+  case?: { id: string; procedure: { name: string } } | null
+}
+
+export interface SlotDay {
+  date: string
+  slots: Array<{ startsAt: string; endsAt: string }>
+}
+
+export interface AvailabilityRule {
+  id: string
+  sedeId: string
+  weekday: number
+  startTime: string
+  endTime: string
+  slotMinutes: number
+  isActive: boolean
+  sede: { name: string; city: string }
+}
+
+export interface AvailabilityBlock {
+  id: string
+  sedeId: string | null
+  startsAt: string
+  endsAt: string
+  reason: string | null
+  sede: { name: string; city: string } | null
+}
+
+// ── Seguimiento (F4) ─────────────────────────────────────────
+
+export type MediaType = 'FOTO' | 'CONSENTIMIENTO' | 'INDICACIONES' | 'OTRO'
+export type MediaStage = 'ANTES' | 'DESPUES' | 'CONTROL'
+
+export interface MediaFile {
+  id: string
+  caseId: string | null
+  originalName: string
+  mimeType: string
+  sizeBytes: number
+  type: MediaType
+  stage: MediaStage | null
+  title: string | null
+  visibleToPatient: boolean
+  takenAt: string | null
+  createdAt: string
+  case?: { procedure: { name: string } } | null
+}
+
+export interface TimelineEntry {
+  id: string
+  type: 'VALORACION' | 'CIRUGIA' | 'CONTROL' | 'NOTA'
+  date: string
+  title: string
+  description: string | null
+  visibleToPatient: boolean
+  author: { name: string } | null
+}
+
+export interface TrackingCase {
+  id: string
+  status: CaseStatus
+  surgeryDate: string | null
+  finishedAt: string | null
+  notes: string | null
+  createdAt: string
+  procedure: { id?: string; name: string; slug?: string }
+  sede: { id?: string; name: string } | null
+  events: TimelineEntry[]
+  files?: MediaFile[]
+  survey?: {
+    sentAt?: string | null
+    answeredAt: string | null
+    rating?: number | null
+    nps?: number | null
+    comment?: string | null
+  } | null
+}
+
+export interface PatientDashboard {
+  nextAppointment: (Omit<Appointment, 'sede'> & { sede: { name: string; address: string } }) | null
+  activeCase: TrackingCase | null
+  casesCount: number
+  photosCount: number
+  latestDocuments: MediaFile[]
+}
+
+// ── Encuestas y galería (F5) ─────────────────────────────────
+
+export interface SurveyResults {
+  sent: number
+  answered: number
+  averageRating: number | null
+  nps: number | null
+  distribution: Array<{ rating: number; count: number }>
+  items: Array<{
+    id: string
+    sentAt: string | null
+    answeredAt: string | null
+    rating: number | null
+    nps: number | null
+    comment: string | null
+    procedure: string
+    city: string | null
+    patient: { id: string; firstName: string; lastName: string }
+  }>
+}
+
+export interface GalleryItem {
+  id: string
+  beforeImageUrl: string
+  afterImageUrl: string
+  description: string | null
+  /** Técnica de lipoabdominoplastia (sólo con Abdominoplastia). */
+  technique?: string | null
+  consentRef?: string
+  isPublished?: boolean
+  sortOrder?: number
+  procedure: { id?: string; slug?: string; name: string } | null
 }

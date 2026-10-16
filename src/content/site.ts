@@ -16,7 +16,7 @@ export const hero = {
   eyebrow: 'Arte & precisión médica',
   title: ['Confía tu', 'transformación', 'a un experto.'],
   subtitle:
-    'Cirugía plástica estética y reconstructiva con ética, tecnología de vanguardia y un acompañamiento cercano antes, durante y después de tu procedimiento.',
+    'Cirugía plástica, estética y reconstructiva con valoración individual, planificación personalizada y acompañamiento antes, durante y después de cada procedimiento.',
   image: '/images/doctor-hero.webp'
 }
 
@@ -24,22 +24,22 @@ export const differentiators = [
   {
     icon: 'shield',
     title: 'Ética médica',
-    text: 'Tu salud y tu seguridad van primero. Te decimos con honestidad qué es posible y qué no.'
+    text: 'La salud y la seguridad orientan cada decisión. Una valoración individual permite explicar las opciones, los alcances y las limitaciones de cada procedimiento.'
   },
   {
     icon: 'cpu',
     title: 'Tecnología avanzada',
-    text: 'VASER, Retraction, Tensamax y cámara hiperbárica para trabajar con precisión y cuidar tu recuperación.'
+    text: 'VASER, MicroAire, Retraction, Tensamax y cámara hiperbárica: tecnologías con funciones distintas, seleccionadas según la valoración y las necesidades de cada caso.'
   },
   {
     icon: 'sparkles',
     title: 'Resultados naturales',
-    text: 'Armonía y proporción: resaltamos tu belleza sin apariencias artificiales.'
+    text: 'Una visión estética centrada en la armonía, la proporción y las características individuales de cada paciente.'
   },
   {
     icon: 'heart',
     title: 'Acompañamiento',
-    text: 'Seguimiento posoperatorio cercano y un portal para que sigas tu proceso paso a paso.'
+    text: 'Seguimiento posoperatorio y acceso al portal del paciente para consultar la información de tu proceso.'
   }
 ] as const
 
@@ -47,49 +47,102 @@ export const technologies = [
   {
     name: 'VASER',
     kind: 'Lipoescultura asistida por ultrasonido',
-    text: 'Emulsifica la grasa antes de extraerla para esculpir con mayor precisión y menor trauma de los tejidos.',
-    image: '/images/tec-vaser-retraction.webp'
+    text: 'Utiliza energía de ultrasonido para fragmentar y emulsificar tejido graso antes de su aspiración. Es una herramienta de contorno corporal; no es un tratamiento para bajar de peso.',
+    image: '/images/tec-vaser-studio.webp'
+  },
+  {
+    name: 'MicroAire',
+    kind: 'Liposucción asistida mecánicamente · PAL',
+    text: 'El sistema PAL de MicroAire incorpora un movimiento mecánico de la cánula para facilitar la aspiración de grasa. A diferencia de VASER, su asistencia no se basa en ultrasonido. La elección de la técnica depende del plan quirúrgico individual.',
+    image: null
   },
   {
     name: 'Retraction',
-    kind: 'Retracción de piel con energía subdérmica',
-    text: 'Estimula la contracción de la piel y la producción de colágeno en zonas con flacidez.',
-    image: '/images/tec-retraction.webp'
+    kind: 'Radiofrecuencia para retracción cutánea',
+    text: 'Aplica energía de radiofrecuencia para tratar tejidos y abordar la flacidez en casos seleccionados. Puede complementar la lipoescultura; no sustituye la retirada quirúrgica de piel cuando existe un exceso importante.',
+    image: '/images/tec-retraction-studio.webp'
   },
   {
     name: 'Tensamax',
     kind: 'Radiofrecuencia posoperatoria',
-    text: 'Terapia no invasiva que acompaña la recuperación y mejora la calidad de la piel y el contorno.',
-    image: '/images/tec-tensamax-sesion.webp'
+    text: 'Tecnología de radiofrecuencia externa que puede formar parte de un plan de atención indicado por el médico. Su uso, el momento de inicio y las sesiones se definen según la evolución del paciente.',
+    image: '/images/tec-tensamax-studio.webp'
   },
   {
     name: 'Cámara hiperbárica',
     kind: 'Oxigenación para la recuperación',
-    text: 'Sesiones de oxígeno hiperbárico en la clínica que favorecen la recuperación de los tejidos.',
-    image: '/images/tec-hiperbarica.webp'
+    text: 'La oxigenoterapia hiperbárica administra oxígeno en un entorno presurizado. Tiene indicaciones médicas específicas y requiere valoración y supervisión; no es necesaria de forma rutinaria después de toda cirugía estética.',
+    image: '/images/tec-hiperbarica-editorial.webp'
   }
 ]
 
 export const doctor = {
+  experienceYears: 7,
+  /** Memberships confirmed by the user on 2026-10-06. Logos from official society sites. */
+  memberships: [
+    {
+      name: 'American Society of Plastic Surgeons (ASPS)',
+      url: 'https://www.plasticsurgery.org/',
+      logo: '/images/societies/asps.webp',
+      confirmed: true
+    },
+    {
+      name: 'International Society of Aesthetic Plastic Surgery (ISAPS)',
+      url: 'https://www.isaps.org/',
+      logo: '/images/societies/isaps.svg',
+      confirmed: true
+    },
+    {
+      name: 'Sociedad Colombiana de Cirugía Plástica Estética y Reconstructiva (SCCP)',
+      url: 'https://cirugiaplastica.org.co/',
+      logo: '/images/societies/sccp.webp',
+      confirmed: true
+    },
+    {
+      name: 'Federación Ibero-Latinoamericana de Cirugía Plástica (FILACP)',
+      url: 'https://www.filacp.org/',
+      logo: '/images/societies/filacp.webp',
+      confirmed: true
+    }
+  ],
   eyebrow: 'Conoce al especialista',
-  title: 'Arte y ciencia en perfecta armonía.',
+  title: 'Precisión y criterio en cirugía plástica.',
+  philosophy:
+    'Cada paciente tiene una historia, unas expectativas y unas características propias. La valoración individual es el punto de partida para definir un plan que integre criterio médico, proporción y una visión estética natural.',
   paragraphs: [
-    'La cirugía plástica es el resultado de un entendimiento profundo de lo que cada paciente busca y necesita. Cada procedimiento se diseña a la medida, combinando precisión quirúrgica con una visión estética natural.',
-    'El Dr. Yamith Cuello acompaña a sus pacientes en Pereira, Barranquilla y Valledupar, con un equipo y una tecnología pensados para que el proceso sea seguro y la recuperación, tranquila.'
+    'El Dr. Yamith Cuello es cirujano plástico, estético y reconstructivo con 7 años de experiencia y más de 2.000 cirugías realizadas. Su enfoque combina la valoración individual, la precisión quirúrgica y una visión estética orientada a la armonía y la proporción.',
+    'La historia clínica, las características de cada paciente y sus expectativas orientan la planificación. Una comunicación clara sobre las opciones y los alcances de cada procedimiento permite tomar decisiones informadas.',
+    'Atiende en Pereira, Barranquilla y Valledupar, con valoraciones presenciales o virtuales y acompañamiento antes, durante y después del procedimiento.'
   ],
   highlights: [
     'Cirugía plástica estética y reconstructiva',
     'Atención en Pereira, Barranquilla y Valledupar',
-    'Tecnología VASER, Retraction y Tensamax'
+    'Valoración presencial o virtual y seguimiento posoperatorio'
   ],
-  /** Credenciales por confirmar con el doctor: universidad, especialización, sociedades. */
+  /** Cifras confirmadas por el doctor (octubre 2026). */
+  stats: { years: 7, surgeries: '2.000' },
+  /** Credenciales: `pending` = falta confirmar con el doctor (no se publican). */
   credentials: [
+    {
+      title: '7 años de experiencia',
+      text: 'Cirugía plástica, estética y reconstructiva.',
+      pending: false
+    },
+    {
+      title: 'Más de 2.000 cirugías',
+      text: 'Realizadas por el Dr. Yamith Cuello.',
+      pending: false
+    },
+    {
+      title: 'Sociedades científicas',
+      text: 'Miembro de ASPS, ISAPS, SCCP y FILACP.',
+      pending: false
+    },
     {
       title: 'Especialización en Cirugía Plástica',
       text: 'Institución y año por confirmar.',
       pending: true
     },
-    { title: 'Sociedades científicas', text: 'Membresías por confirmar.', pending: true },
     {
       title: 'Actualización continua',
       text: 'Congresos y formación en nuevas tecnologías.',
@@ -107,11 +160,39 @@ export const processSteps = [
   },
   {
     title: 'Procedimiento',
-    text: 'En quirófano certificado, con anestesiología y tecnología de vanguardia para tu seguridad.'
+    text: 'La indicación, la técnica, el entorno de atención y el plan anestésico se revisan antes de confirmar el procedimiento.'
   },
   {
     title: 'Recuperación',
     text: 'Controles programados, terapias posoperatorias y seguimiento desde tu portal de paciente.'
+  }
+]
+
+export const valuationFaq = [
+  {
+    question: '¿Qué se revisa durante la valoración?',
+    answer:
+      'Se conversa sobre tus objetivos y se revisan la historia clínica, los antecedentes y las características de la zona a tratar. La consulta permite comparar opciones, explicar sus límites y definir si es necesario realizar estudios antes de tomar una decisión.'
+  },
+  {
+    question: '¿Puedo comenzar con una valoración virtual?',
+    answer:
+      'Puedes solicitar atención presencial o virtual. Una consulta a distancia permite una orientación inicial; el equipo te indicará si se necesita un examen presencial o información adicional para completar la evaluación.'
+  },
+  {
+    question: '¿Cómo se define el costo del procedimiento?',
+    answer:
+      'La propuesta se prepara después de revisar el caso y el alcance de la atención. Solicita el detalle de lo incluido, los controles previstos y los posibles gastos adicionales antes de confirmar el plan.'
+  },
+  {
+    question: '¿La misma tecnología se utiliza en todos los pacientes?',
+    answer:
+      'No. VASER, MicroAire, Retraction, Tensamax y cámara hiperbárica tienen funciones diferentes. Su uso debe responder a una indicación, a las características del procedimiento y a la evolución de cada paciente.'
+  },
+  {
+    question: '¿Cómo se organiza el seguimiento después de la cirugía?',
+    answer:
+      'El plan incluye indicaciones de cuidado y controles según el procedimiento. El portal permite consultar información del proceso; si se necesita un examen presencial, el equipo lo indicará. Las situaciones urgentes requieren atención médica directa.'
   }
 ]
 
@@ -123,7 +204,7 @@ export const gallery = [
   { src: '/images/marcacion.webp', alt: 'Marcación prequirúrgica' },
   {
     src: '/images/tec-doctor-equipos.webp',
-    alt: 'El Dr. Cuello con los equipos de VASER y Retraction',
+    alt: 'Equipos de VASER y Retraction en la clínica',
     tall: true
   },
   { src: '/images/lavado.webp', alt: 'Protocolo de asepsia antes de la cirugía' },
@@ -183,4 +264,5 @@ export const whatsappLink = (
 ) => `https://wa.me/${number}?text=${encodeURIComponent(text)}`
 
 /** true mientras el número sea el provisional del seed. */
-export const isPendingWhatsapp = (number: string) => /^570+$/.test(number)
+export const isPendingWhatsapp = (number: string) =>
+  !/^\+?[1-9]\d{9,14}$/.test(number) || /^570+$/.test(number)

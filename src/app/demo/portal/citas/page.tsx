@@ -70,7 +70,7 @@ export default function DemoBookingPage() {
         title="Agendar una cita"
         subtitle="Elige la sede, el tipo de cita y un horario disponible."
       />
-      <div className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.6fr_1fr]">
         <div className="space-y-6">
           <Panel title="1. Sede">
             <div className="flex flex-wrap gap-2">

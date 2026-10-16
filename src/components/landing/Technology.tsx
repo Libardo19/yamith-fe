@@ -13,17 +13,23 @@ export function Technology() {
           text="Equipos de última generación en quirófano y en la recuperación, para trabajar con precisión y cuidar cada etapa de tu proceso."
           tone="light"
         />
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
           {technologies.map((t) => (
             <article key={t.name} className="group flex flex-col bg-navy-800">
               <div className="relative aspect-[4/3] overflow-hidden">
-                <Image
-                  src={t.image}
-                  alt={`Equipo ${t.name}`}
-                  fill
-                  sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover transition duration-700 group-hover:scale-105"
-                />
+                {t.image ? (
+                  <Image
+                    src={t.image}
+                    alt={`Equipo ${t.name}`}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center px-6 text-center text-3xl text-gold-300">
+                    MicroAire<small className="ml-2 text-sm">PAL</small>
+                  </div>
+                )}
               </div>
               <div className="flex flex-1 flex-col p-6">
                 <p className="text-[10px] font-semibold tracking-[0.2em] text-gold-300 uppercase">
